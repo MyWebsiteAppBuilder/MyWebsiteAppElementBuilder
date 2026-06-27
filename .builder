@@ -14,11 +14,11 @@ build() {
 
     if [[ "${MODE:-development}" == production ]]; then
 
-      npx ejs "${srcdir}${name}".html -o "${dstdir}${name}".html -m ! -w
+      npx ejs "${srcdir}${name}".html -o "${dstdir}${name}".html -m "!" -w
 
     else
 
-      npx ejs "${srcdir}${name}".html -o "${dstdir}${name}".html -m !
+      npx ejs "${srcdir}${name}".html -o "${dstdir}${name}".html -m "!"
 
     fi
 
