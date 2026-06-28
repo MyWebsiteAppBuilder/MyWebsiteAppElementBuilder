@@ -76,7 +76,7 @@ build() {
 
     fi
 
-    args=(-C "${dst%/*}"/ Handler.class)
+    local args=(-C "${dst%/*}"/ Handler.class)
 
     if [[ -d "${src%/*}"/resources/ ]]; then
 
