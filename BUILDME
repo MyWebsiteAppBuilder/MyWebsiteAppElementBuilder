@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-source .builder
-
 if [[ -d src/pub/ ]]; then
 
   printf "Building src/pub/\n"
