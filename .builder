@@ -45,7 +45,7 @@ build() {
 
     npx rolldown "$src".js -o "$dst".combined.js -f iife
 
-    npx swc "$dst".combined.js -o "$dst".transpiled.js -q
+    npx swc "$dst".combined.js -o "$dst".transpiled.js
 
     if [[ "${MODE:-development}" == production ]]; then
 
