@@ -2,15 +2,21 @@
 
 set -euo pipefail
 
-if [[ -d src/pub/ ]]; then
+for src in src/pub/*; do
 
-  printf "Building src/pub/\n"
+  if [[ -e "$src" ]]; then
 
-  mkdir -p dst/
+    printf "Building $src\n"
 
-  cp -r -T src/pub/ dst/pub/
+    dst="${src/src/dst}"
 
-fi
+    mkdir -p "${dst%/*}"/
+
+    cp -r -T "$src" "$dst"
+
+  fi
+
+done
 
 for src in src/pub.lib.*/; do
   
