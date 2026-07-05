@@ -4,15 +4,15 @@ set -euo pipefail
 
 for src in src/pub/*; do
 
-  if [[ -e "$src" ]]; then
+  if [[ -f "$src" ]]; then
 
     printf "Building $src\n"
 
     dst="${src/src/dst}"
 
-    mkdir -p "${dst%/*}"/
+    mkdir -p dst/pub/
 
-    cp -r -T "$src" "$dst"
+    cp "$src" "$dst"
 
   fi
 
@@ -24,10 +24,10 @@ for src in src/pub.lib.*/; do
 
     printf "Building $src\n"
 
-    dst="${src//./\/}"
-    dst="${dst/src/dst}"
+    dst="${src/src/dst}"
+    dst="${dst//./\/}"
 
-    mkdir -p "${dst%/*}"/
+    mkdir -p "$dst"
 
     cp -r -T "$src" "$dst"
 
@@ -43,8 +43,8 @@ for src in src/pub.*/; do
 
       printf "Building $src\n"
 
-      dst="${src//./\/}"
-      dst="${dst/src/dst}"
+      dst="${src/src/dst}"
+      dst="${dst//./\/}"
       dst="${dst%\/}"
 
       if [[ -f "$src".html ]]; then
