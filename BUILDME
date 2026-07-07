@@ -47,6 +47,8 @@ for src in src/pub.*/; do
       dst="${dst//./\/}"
       dst="${dst%\/}"
 
+      src="$src${dst##*/}"
+
       if [[ -f "$src".html ]]; then
 
         mkdir -p "${dst%/*}"/
@@ -116,7 +118,7 @@ for src in src/pub.*/; do
 
         fi
 
-        local args=(-C "${dst%/*}"/ Handler.class)
+        args=(-C "${dst%/*}"/ Handler.class)
 
         if [[ -d "${src%/*}"/resources/ ]]; then
 
