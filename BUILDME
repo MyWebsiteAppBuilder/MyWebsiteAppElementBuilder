@@ -39,7 +39,7 @@ for src in src/pub.*/; do
 
   if [[ -d "$src" ]]; then
    
-    if [[ ! "$src" =~ ^src/pub.lib.*/ ]]; then
+    if [[ ! "$src" =~ ^src/pub.lib.*/$ ]]; then
 
       printf "Building $src\n"
 
