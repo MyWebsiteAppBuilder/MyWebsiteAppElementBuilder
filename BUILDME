@@ -49,9 +49,9 @@ for src in src/pub.*/; do
 
       src="$src${dst##*/}"
 
-      if [[ -f "$src".html ]]; then
+      mkdir -p "${dst%/*}"/
 
-        mkdir -p "${dst%/*}"/
+      if [[ -f "$src".html ]]; then
 
         if [[ "${MODE:-development}" == production ]]; then
 
@@ -67,8 +67,6 @@ for src in src/pub.*/; do
 
       if [[ -f "$src".css ]]; then
 
-        mkdir -p "${dst%/*}"/
-
         if [[ "${MODE:-development}" == production ]]; then
 
           npx lightningcss "$src".css -o "$dst".css --bundle --browserslist --minify
@@ -82,8 +80,6 @@ for src in src/pub.*/; do
       fi
 
       if [[ -f "$src".js ]]; then
-
-        mkdir -p "${dst%/*}"/
 
         npx rolldown "$src".js -o "$dst".combined.js -f iife
 
@@ -105,8 +101,6 @@ for src in src/pub.*/; do
       fi
 
       if [[ -f "${src%/*}"/Handler.java ]]; then
-
-        mkdir -p "${dst%/*}"/
 
         if [[ "${MODE:-development}" == production ]]; then
 
