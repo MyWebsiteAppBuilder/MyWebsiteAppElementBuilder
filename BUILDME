@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 set -euo pipefail
 
 for src in src/pub/*; do
@@ -43,11 +43,12 @@ for src in src/pub.*/; do
 
       printf "Building $src\n"
 
-      dst="${src/src/dst}"
-      dst="${dst//./\/}"
-      dst="${dst%\/}"
+      tmp="${src%\/}"
 
-      src="$src${dst##*/}"
+      src="$src${tmp##*.}"
+
+      dst="${tmp/src/dst}"
+      dst="${dst//./\/}"
 
       mkdir -p "${dst%/*}"/
 
