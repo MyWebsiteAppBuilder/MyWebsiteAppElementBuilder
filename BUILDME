@@ -37,105 +37,101 @@ done
 
 for src in src/pub.*/; do
 
-  if [[ -d "$src" ]]; then
-   
-    if [[ ! "$src" =~ ^src/pub.lib.*/$ ]]; then
+  if [[ -d "$src" && ! "$src" =~ ^src/pub.lib.*/$ ]]; then
 
-      printf "Building $src\n"
+	printf "Building $src\n"
 
-      tmp="${src%\/}"
+	tmp="${src%\/}"
 
-      src="$src${tmp##*.}"
+	src="$src${tmp##*.}"
 
-      dst="${tmp/src/dst}"
-      dst="${dst//./\/}"
+	dst="${tmp/src/dst}"
+	dst="${dst//./\/}"
 
-      mkdir -p "${dst%/*}"/
+	mkdir -p "${dst%/*}"/
 
-      if [[ -f "$src".html ]]; then
+	if [[ -f "$src".html ]]; then
 
-        if [[ "${MODE:-development}" == production ]]; then
+	  if [[ "${MODE:-development}" == production ]]; then
 
-          npx ejs "$src".html -o "$dst".html -m ! -w
+		npx ejs "$src".html -o "$dst".html -m ! -w
 
-        else
+	  else
 
-          npx ejs "$src".html -o "$dst".html -m !
+		npx ejs "$src".html -o "$dst".html -m !
 
-        fi
+	  fi
 
-      fi
+	fi
 
-      if [[ -f "$src".css ]]; then
+	if [[ -f "$src".css ]]; then
 
-        if [[ "${MODE:-development}" == production ]]; then
+	  if [[ "${MODE:-development}" == production ]]; then
 
-          npx lightningcss "$src".css -o "$dst".css --bundle --browserslist --minify
+		npx lightningcss "$src".css -o "$dst".css --bundle --browserslist --minify
 
-        else
+	  else
 
-          npx lightningcss "$src".css -o "$dst".css --bundle --browserslist
+		npx lightningcss "$src".css -o "$dst".css --bundle --browserslist
 
-        fi
+	  fi
 
-      fi
+	fi
 
-      if [[ -f "$src".js ]]; then
+	if [[ -f "$src".js ]]; then
 
-        npx rolldown "$src".js -o "$dst".combined.js -f iife
+	  npx rolldown "$src".js -o "$dst".combined.js -f iife
 
-        npx swc "$dst".combined.js -o "$dst".transpiled.js
+	  npx swc "$dst".combined.js -o "$dst".transpiled.js
 
-        if [[ "${MODE:-development}" == production ]]; then
+	  if [[ "${MODE:-development}" == production ]]; then
 
-          npx rolldown "$dst".transpiled.js -o "$dst".js -m
+		npx rolldown "$dst".transpiled.js -o "$dst".js -m
 
-        else
+	  else
 
-          cp "$dst".transpiled.js "$dst".js
+		cp "$dst".transpiled.js "$dst".js
 
-        fi
+	  fi
 
-        rm "$dst".combined.js
-        rm "$dst".transpiled.js
+	  rm "$dst".combined.js
+	  rm "$dst".transpiled.js
 
-      fi
+	fi
 
-      if [[ -f "${src%/*}"/Handler.java ]]; then
+	if [[ -f "${src%/*}"/Handler.java ]]; then
 
-        if [[ "${MODE:-development}" == production ]]; then
+	  if [[ "${MODE:-development}" == production ]]; then
 
-          javac -cp "dst/lib/*" "${src%/*}"/Handler.java -d "${dst%/*}"/
+		javac -cp "dst/lib/*" "${src%/*}"/Handler.java -d "${dst%/*}"/
 
-        else
+	  else
 
-          javac -cp "dst/lib/*" "${src%/*}"/Handler.java -d "${dst%/*}"/ -g
+		javac -cp "dst/lib/*" "${src%/*}"/Handler.java -d "${dst%/*}"/ -g
 
-        fi
+	  fi
 
-        args=(-C "${dst%/*}"/ Handler.class)
+	  args=(-C "${dst%/*}"/ Handler.class)
 
-        if [[ -d "${src%/*}"/resources/ ]]; then
+	  if [[ -d "${src%/*}"/resources/ ]]; then
 
-          args+=(-C "${src%/*}"/ resources/)
+		args+=(-C "${src%/*}"/ resources/)
 
-        fi
+	  fi
 
-        if [[ -f "$dst".html ]]; then
-        
-          args+=(-C "${dst%/*}"/ "${dst##*/}".html)
+	  if [[ -f "$dst".html ]]; then
 
-        fi
+		args+=(-C "${dst%/*}"/ "${dst##*/}".html)
 
-        jar cf "$dst".jar "${args[@]}"
+	  fi
 
-        rm "${dst%/*}"/Handler.class
+	  jar cf "$dst".jar "${args[@]}"
 
-        rm -f "$dst".html
+	  rm "${dst%/*}"/Handler.class
 
-      fi
+	  rm -f "$dst".html
 
-    fi
+	fi
 
   fi
 
