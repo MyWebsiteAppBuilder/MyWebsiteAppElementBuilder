@@ -113,15 +113,15 @@ for src in src/pub.*/; do
 
 	  args=(-C "${dst%/*}"/ Handler.class)
 
-	  if [[ -d "${src%/*}"/resources/ ]]; then
-
-		args+=(-C "${src%/*}"/ resources/)
-
-	  fi
-
 	  if [[ -f "$dst".html ]]; then
 
 		args+=(-C "${dst%/*}"/ "${dst##*/}".html)
+
+	  fi
+
+	  if [[ -d "${src%/*}"/resources/ ]]; then
+
+		args+=(-C "${src%/*}"/ resources/)
 
 	  fi
 
